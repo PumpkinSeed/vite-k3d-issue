@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    app.kubernetes.io/name: nginx
+spec:
+  containers:
+    - name: nginx
+      image: nginx:latest
+      env:
+      - name: NGINX_ENVSUBST_TEMPLATE_SUFFIX
+        value: ".conf"
+      imagePullPolicy: Always
+      volumeMounts:
+        - name: nginx-conf
+          mountPath: /etc/nginx/templates/default.conf.conf
+          subPath: proxy.conf
+  volumes:
+    - name: nginx-conf
+      configMap:
+        name: nginx-conf
+        items:
+          - key: proxy.conf
+            path: proxy.conf
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+data:
+  proxy.conf: |
+    server {
+        listen 80;
+        server_name test.domain.local;
+        access_log  off;
+
+        location / {
+            proxy_pass http://test-service:3001;
+        }
+    }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app.kubernetes.io/name: nginx
+  ports:
+    - name: ingress
+      protocol: TCP
+      port: 80
+      targetPort: 80

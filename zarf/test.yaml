@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: test
+    labels:
+        app.kubernetes.io/name: test
+spec:
+    containers:
+        - name: test
+          image: k3d-registry.localhost:12345/test
+          imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: test-service
+spec:
+    selector:
+        app.kubernetes.io/name: test
+    ports:
+        - name: ui
+          protocol: TCP
+          port: 3001
+          targetPort: 3000
