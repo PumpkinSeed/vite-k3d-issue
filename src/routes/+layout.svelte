@@ -1,10 +1,6 @@
 <script>
 	import Header from './Header.svelte';
 	import './styles.css';
-
-	export const trailingSlash = 'always';
-	export const ssr = false;
-	export const prerender = 'auto';
 </script>
 
 <div class="app">

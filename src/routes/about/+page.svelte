@@ -1,3 +1,7 @@
+<script>
+	export let data;
+</script>
+
 <svelte:head>
 	<title>About</title>
 	<meta name="description" content="About this app" />
@@ -10,6 +14,8 @@
 		This is a <a href="https://kit.svelte.dev">SvelteKit</a> app. You can make your own by typing the
 		following into your command line and following the prompts:
 	</p>
+
+	<p>{data.items.director}</p>
 
 	<pre>npm create svelte@latest</pre>
 

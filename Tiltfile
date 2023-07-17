@@ -10,6 +10,7 @@ resource_definition = './zarf/test.yaml'
 
 docker_build(tag, location, dockerfile="./Dockerfile", ssh='default', live_update=[sync(location, '/home/node/app')])
 k8s_yaml(read_file(resource_definition))
+k8s_resource('test', port_forwards='3001:3000', trigger_mode=TRIGGER_MODE_AUTO)
 
 k8s_yaml(read_file('zarf/nginx.yaml'))
 k8s_resource('nginx', port_forwards=['0.0.0.0:80:80'])
